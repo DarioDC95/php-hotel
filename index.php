@@ -4,6 +4,8 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
+    var_dump($_POST);
+
     $hotels = [
 
         [
@@ -44,22 +46,42 @@
 
     ];
 
-    echo '<pre>';
-    var_dump($hotels);
-    echo '</pre>';
+    // echo '<pre>';
+    // var_dump($hotels);
+    // echo '</pre>';
 
     $isParking = null;
-    if(isset($_POST['SubmitButton'])){ // Check if form was submitted 
-        $isParking = $_POST["parckingArea"];
-    };
 
-    echo $isParking;
+    echo '<br>';
 
-    // function bonus() {
-    //     if($isParking == null) {
-    //         return $hotels;
-    //     }
-    // };
+    $isParking = $_POST["parckingArea"];
+    echo $isParking ;
+
+    function ciao($hotels, $isParking) {
+        $filterdHotels = [];
+    
+        if($isParking == 'NoPark') {
+            $filterdHotels = [];
+            foreach ($hotels as $value) {
+                if($value['parking'] == false) {
+                    $filterdHotels[] = $value;
+                }
+            };
+            return $filterdHotels;
+        }
+        elseif ($isParking == 'Park') {
+            $filterdHotels = [];
+            foreach ($hotels as $value) {
+                if($value['parking'] == true) {
+                    $filterdHotels[] = $value;
+                }
+            };
+            return $filterdHotels;
+        }
+        else {
+            return $hotels;
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -88,7 +110,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($hotels as $value) { ?>
+                            <?php foreach (ciao($hotels, $isParking) as $value) { ?>
                                 <tr>
                                     <?php foreach ($value as $key => $element) { ?>
                                         <td>
@@ -107,22 +129,22 @@
                             <?php } ?>
                         </tbody>
                     </table>
-                    <form action="./index.php" method="post">
+                    <form action="#" method="post">
                         <div class="mb-2">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="parckingArea" id="parckingAreaTrue" value="1">
+                                <input class="form-check-input" type="radio" name="parckingArea" id="parckingAreaTrue" value="Park">
                                 <label class="form-check-label" for="parckingArea">
                                     CON Parcheggio
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="parckingArea" id="parckingAreaFalse" value="0">
+                                <input class="form-check-input" type="radio" name="parckingArea" id="parckingAreaFalse" value="NoPark">
                                 <label class="form-check-label" for="parckingArea">
                                     SENZA Parcheggio
                                 </label>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="submit" name="submitButton" class="btn btn-primary">Search</button>
                     </form>
                 </div>
             </div>
