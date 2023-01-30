@@ -4,6 +4,32 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
+    function ciao($hotels, $isParking) {
+        $filterdHotels = [];
+    
+        if($isParking == 'NoPark') {
+            $filterdHotels = [];
+            foreach ($hotels as $value) {
+                if($value['parking'] == false) {
+                    $filterdHotels[] = $value;
+                }
+            };
+            return $filterdHotels;
+        }
+        elseif ($isParking == 'Park') {
+            $filterdHotels = [];
+            foreach ($hotels as $value) {
+                if($value['parking'] == true) {
+                    $filterdHotels[] = $value;
+                }
+            };
+            return $filterdHotels;
+        }
+        else {
+            return $hotels;
+        }
+    }
+
     var_dump($_POST);
 
     $hotels = [
@@ -54,34 +80,10 @@
 
     echo '<br>';
 
-    $isParking = $_POST["parckingArea"];
+    if(isset($_POST["parckingArea"])) {
+        $isParking = $_POST["parckingArea"];
+    };
     echo $isParking ;
-
-    function ciao($hotels, $isParking) {
-        $filterdHotels = [];
-    
-        if($isParking == 'NoPark') {
-            $filterdHotels = [];
-            foreach ($hotels as $value) {
-                if($value['parking'] == false) {
-                    $filterdHotels[] = $value;
-                }
-            };
-            return $filterdHotels;
-        }
-        elseif ($isParking == 'Park') {
-            $filterdHotels = [];
-            foreach ($hotels as $value) {
-                if($value['parking'] == true) {
-                    $filterdHotels[] = $value;
-                }
-            };
-            return $filterdHotels;
-        }
-        else {
-            return $hotels;
-        }
-    }
 ?>
 
 <!DOCTYPE html>
@@ -144,7 +146,7 @@
                                 </label>
                             </div>
                         </div>
-                        <button type="submit" name="submitButton" class="btn btn-primary">Search</button>
+                        <button type="submit" class="btn btn-primary">Search</button>
                     </form>
                 </div>
             </div>
