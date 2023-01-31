@@ -4,7 +4,7 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
-    function ciao($hotels, $isParking, $chosenVote) {
+    function filter($hotels, $isParking, $chosenVote) {
         $filterdHotels = [];
         $refilteredHotels = [];
     
@@ -34,7 +34,7 @@
             };
         }
         else {
-            $refilteredHotels = $hotels;
+            $refilteredHotels = $filterdHotels;
         }
 
         return $refilteredHotels;
@@ -100,9 +100,6 @@
         if($_POST["numberVote"] >= 0 && $_POST["numberVote"] <= 5) {
             $chosenVote = $_POST["numberVote"];
         }
-        else {
-            $chosenVote = null;
-        }
     };
     echo $chosenVote;
 ?>
@@ -137,7 +134,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach (ciao($hotels, $isParking, $chosenVote) as $value) { ?>
+                                <?php foreach (filter($hotels, $isParking, $chosenVote) as $value) { ?>
                                     <tr>
                                         <?php foreach ($value as $key => $element) { ?>
                                             <td>
@@ -176,7 +173,7 @@
                                 </div>
                                 <div class="ms-5">
                                     <label for="numberVote" class="form-label">seleziona un voto da 0 a 5 per l'hotel che vuoi cercare</label>
-                                    <input type="number" class="form-control" name="numberVote" id="numberVoteOK" placeholder="Inserisci un voto da 0 a 5">
+                                    <input type="number" class="form-control" name="numberVote" id="numberVoteOK" placeholder="Inserisci un voto da 0 a 5" value="<?php echo isset($_POST['numberVote']) && $chosenVote != null ? $chosenVote : '' ?>">
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Search</button>
